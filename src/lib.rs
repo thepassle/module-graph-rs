@@ -11,6 +11,9 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use url::Url;
 
+// @TODO https://github.com/devongovett/glob-match
+// for excludePattern
+
 use napi_derive::napi;
 
 pub fn is_bare_module_specifier(specifier: &str) -> bool {
@@ -154,6 +157,9 @@ pub fn create_module_graph(
       start.call2::<Vec<JsString>, JsString, JsUndefined>(entry_points_js, base_path)?;
     }
   }
+  // checks for dynamic expressions in importee, e.g.: "`./translations/${locale}.js`"
+  // can probably remove once we use oxc_module_lexer
+  let re = Regex::new(r"\$\{[^}]+\}").unwrap();
 
   while let Some(dep) = modules.pop() {
     let source =
@@ -166,6 +172,8 @@ pub fn create_module_graph(
       .entry(dep.to_str().unwrap().to_string())
       .or_default();
 
+    // @TODO use oxc_module_lexer
+    // https://github.com/oxc-project/oxc/blob/49a4e6ecf274222b27c13bdce0e0ef37413dd060/crates/oxc_module_lexer/examples/module_lexer.rs
     'importloop: for import in module.imports() {
       let mut importee = import.specifier().to_string();
       if dev {
@@ -184,7 +192,6 @@ pub fn create_module_graph(
       }
       // checks for dynamic expressions in importee, e.g.: "`./translations/${locale}.js`"
       // can probably remove once we use oxc_module_lexer
-      let re = Regex::new(r"\$\{[^}]+\}").unwrap();
       if re.is_match(&importee) {
         continue;
       }
