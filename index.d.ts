@@ -27,6 +27,7 @@ export interface Plugin {
   name?: string
   start?: (...args: any[]) => any
   analyze?: (...args: any[]) => any
+  resolve?: (...args: any[]) => any
   handleImport?: (...args: any[]) => any
 }
 export function createModuleGraph(
@@ -36,4 +37,10 @@ export function createModuleGraph(
   builtinModules: Array<string>,
   ignoreExternal: boolean,
   plugins: Array<Plugin>,
+  dev: boolean,
 ): ModuleGraph
+export interface Foo {
+  bar: string
+  baz: Array<string>
+}
+export function runJsCallback(callback: (arg0: Foo) => void): void

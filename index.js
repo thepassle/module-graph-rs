@@ -1,13 +1,6 @@
 import { createModuleGraph as create_module_graph, /*getCwd*/ } from './index.cjs';
 import { builtinModules } from "module";
 
-
-// getCwd((foo,bar) => {
-//   console.log(foo, bar);
-//   return false;
-//   return 'string';
-// });
-
 export function createModuleGraph(entrypoints, options = {}) {
   const { 
     plugins = [
@@ -28,6 +21,7 @@ export function createModuleGraph(entrypoints, options = {}) {
     basePath = process.cwd(), 
     exportConditions = ["node", "import"],
     ignoreExternal = false,
+    dev = false,
     ...resolveOptions 
   } = options;
 
@@ -38,7 +32,8 @@ export function createModuleGraph(entrypoints, options = {}) {
     exportConditions, 
     builtinModules, 
     ignoreExternal, 
-    plugins
+    plugins,
+    dev
   );
 
   /**
@@ -79,16 +74,3 @@ export function createModuleGraph(entrypoints, options = {}) {
 
   return moduleGraph;
 }
-
-// const graph = createModuleGraph('./a.js');
-// console.log(graph);
-
-
-// console.assert(plus100(0) === 100, 'Simple test failed')
-
-// plus100((p) => {
-//   console.log(p);
-//   return 'foo';
-// });
-
-// console.info('Simple test passed')
