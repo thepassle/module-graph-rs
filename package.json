@@ -1,0 +1,67 @@
+{
+  "name": "@thepassle/module-graph-rs",
+  "version": "1.0.0",
+  "description": "Template project for writing node package with napi-rs",
+  "main": "index.js",
+  "repository": "git@github.com:napi-rs/package-template.git",
+  "license": "MIT",
+  "type": "module",
+  "keywords": [
+    "napi-rs",
+    "NAPI",
+    "N-API",
+    "Rust",
+    "node-addon",
+    "node-addon-api"
+  ],
+  "files": [
+    "index.d.ts",
+    "index.js"
+  ],
+  "napi": {
+    "name": "package-template",
+    "triples": {
+      "defaults": true,
+      "additional": [
+        "x86_64-unknown-linux-musl",
+        "aarch64-unknown-linux-gnu",
+        "i686-pc-windows-msvc",
+        "armv7-unknown-linux-gnueabihf",
+        "aarch64-apple-darwin",
+        "aarch64-linux-android",
+        "x86_64-unknown-freebsd",
+        "aarch64-unknown-linux-musl",
+        "aarch64-pc-windows-msvc",
+        "armv7-linux-androideabi"
+      ]
+    }
+  },
+  "engines": {
+    "node": ">= 10"
+  },
+  "scripts": {
+    "artifacts": "napi artifacts",
+    "build": "napi build --platform --js=index.cjs --release --pipe \"prettier -w\"",
+    "build:debug": "napi build --platform --pipe \"prettier -w\"",
+    "format": "run-p format:prettier format:rs format:toml",
+    "format:prettier": "prettier . -w",
+    "format:toml": "taplo format",
+    "format:rs": "cargo fmt",
+    "prepublishOnly": "napi prepublish -t npm",
+    "test": "node --test --experimental-test-coverage test/module-graph.test.js",
+    "test:watch": "node --test --watch test/module-graph.test.js"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^2.16.4",
+    "@taplo/cli": "^0.7.0",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "trailingComma": "all",
+    "singleQuote": true,
+    "arrowParens": "always"
+  }
+}
